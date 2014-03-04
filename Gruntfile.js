@@ -4,7 +4,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %>#<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */'
+                banner: '/*! <%= pkg.name %>#<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
             build: {
                 files: {
@@ -13,7 +13,23 @@ module.exports = function (grunt) {
                         'src/ReflectionMethod.js',
                         'src/ReflectionObject.js',
                         'src/ReflectionProperty.js',
+                        'src/ReflectionConstant.js',
                     ]
+                }
+            },
+            concat: {
+                files: {
+                    'reflection.js': [
+                        'src/ReflectionClass.js',
+                        'src/ReflectionMethod.js',
+                        'src/ReflectionObject.js',
+                        'src/ReflectionProperty.js',
+                        'src/ReflectionConstant.js'
+                    ]
+                },
+                options: {
+                    mangle: false,
+                    beautify: true
                 }
             }
         },
@@ -170,7 +186,7 @@ module.exports = function (grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('default', ['bower-install']);
+    grunt.registerTask('default', ['uglify']);
     grunt.registerTask('test', [
         'jscs',
         'shell:test'
