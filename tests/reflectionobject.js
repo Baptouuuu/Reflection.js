@@ -74,7 +74,7 @@ describe('ReflectionObject', function () {
 
         expect(function () {
             refl.getMethod('unknown');
-        }).toThrow(new ReferenceError());
+        }).toThrow('Unknown method');
     });
 
     it('should return a ReflectionMethod object', function () {
