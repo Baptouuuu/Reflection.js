@@ -19,7 +19,11 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
      */
 
     getPrototype: {
-        value: function () {}
+        value: function () {
+
+            return this.methodPrototype;
+
+        }
     },
 
     /**
@@ -29,7 +33,11 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
      */
 
     getName: {
-        value: function () {}
+        value: function () {
+
+            return this.name;
+
+        }
     },
 
     /**
