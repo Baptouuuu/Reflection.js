@@ -20,17 +20,13 @@ describe('ReflectionMethod', function () {
     });
 
     it('should set the method body', function () {
-        var refl = new ReflectionMethod();
-
-        refl.setPrototype(Mock.prototype.method);
+        var refl = new ReflectionMethod('method', Mock.prototype.method);
 
         expect(refl.getPrototype()).toEqual(Mock.prototype.method);
     });
 
     it('should set the method name', function () {
-        var refl = new ReflectionMethod();
-
-        refl.setName('method');
+        var refl = new ReflectionMethod('method', Mock.prototype.method);
 
         expect(refl.getName()).toEqual('method');
     });

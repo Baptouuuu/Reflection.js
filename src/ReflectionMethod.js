@@ -1,24 +1,16 @@
-var ReflectionMethod = function () {
+var ReflectionMethod = function (name, methodPrototype) {
 
-    this.methodPrototype = null;
-    this.name = null;
+    if (!name || !methodPrototype) {
+        throw new SyntaxError('You must specify method name and prototype');
+    }
+
+    this.methodPrototype = methodPrototype;
+    this.name = name;
     this.classOwner = null;
     this.objectOwner = null;
 
 };
 ReflectionMethod.prototype = Object.create(Object.prototype, {
-
-    /**
-     * Set the method body
-     *
-     * @param {Function} method
-     *
-     * @return {ReflectionMethod}
-     */
-
-    setPrototype: {
-        value: function (method) {}
-    },
 
     /**
      * Return the method body
@@ -28,18 +20,6 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
 
     getPrototype: {
         value: function () {}
-    },
-
-    /**
-     * Set the method name
-     *
-     * @param {String} name
-     *
-     * @return {ReflectionMethod}
-     */
-
-    setName: {
-        value: function (name) {}
     },
 
     /**
