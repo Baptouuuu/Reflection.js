@@ -45,7 +45,7 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
                         prop,
                         this.object[prop]
                     );
-                    refl.setObject(this.object);
+                    refl.setObject(this);
                     properties.push(refl);
                 }
             }
@@ -72,7 +72,7 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
 
             var refl = new ReflectionProperty(property, this.object[property]);
 
-            refl.setObject(this.object);
+            refl.setObject(this);
 
             return refl;
 
