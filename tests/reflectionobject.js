@@ -27,6 +27,12 @@ describe('ReflectionObject', function () {
         object = new Mock();
     });
 
+    it('should return the reflected object', function () {
+        var refl = new ReflectionObject(object);
+
+        expect(refl.getObject()).toEqual(object);
+    });
+
     it('should throw if not an object passed to the constructor', function () {
         expect(function () {
             new ReflectionObject(function () {});

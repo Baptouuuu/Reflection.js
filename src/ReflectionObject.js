@@ -14,6 +14,20 @@ var ReflectionObject = function (object) {
 ReflectionObject.prototype = Object.create(Object.prototype, {
 
     /**
+     * Get the object reflected
+     *
+     * @return {Object}
+     */
+
+    getObject: {
+        value: function () {
+
+            return this.object;
+
+        }
+    },
+
+    /**
      * Return the list of properties set in the object
      *
      * @return {Array}
