@@ -94,7 +94,19 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     getMethod: {
-        value: function (method) {}
+        value: function (method) {
+
+            if (!this.hasMethod(method)) {
+                throw new ReferenceError('Unknown method');
+            }
+
+            var refl = new ReflectionMethod(method, this.object[method]);
+
+            refl.setObject(this.object);
+
+            return refl;
+
+        }
     },
 
     /**
@@ -106,7 +118,17 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     hasMethod: {
-        value: function (method) {}
+        value: function (method) {
+
+            var m;
+
+            if (typeof this.object[method] === 'function' && !this.hasProperty(method)) {
+                return true;
+            }
+
+            return false;
+
+        }
     },
 
     /**
