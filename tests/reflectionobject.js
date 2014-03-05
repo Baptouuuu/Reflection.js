@@ -101,7 +101,7 @@ describe('ReflectionObject', function () {
 
         expect(function () {
             refl.getConstant('unknown');
-        }).toThrow(new ReferenceError());
+        }).toThrow('Unknown constant');
     });
 
     it('should return a ReflectionConstant object', function () {
