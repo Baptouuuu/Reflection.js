@@ -25,7 +25,7 @@ describe('ReflectionClass', function () {
     it('should throw if not a function passed to the constructor', function () {
         expect(function () {
             new ReflectionClass({});
-        }).toThrow(new TypeError());
+        }).toThrow('You must pass a function as argument');
     });
 
     it('should return the list of properties', function () {
@@ -34,7 +34,7 @@ describe('ReflectionClass', function () {
 
         expect(props instanceof Array).toBe(true);
         expect(props.length).toEqual(1);
-        expect(props).toEqual(['property']);
+        expect(props[0] instanceof ReflectionProperty).toBe(true);
     });
 
     it('should return a ReflectionProperty object', function () {
@@ -49,7 +49,7 @@ describe('ReflectionClass', function () {
 
         expect(function () {
             refl.getProperty('unknown');
-        }).toThrow(new ReferenceError());
+        }).toThrow('Unknown property');
     });
 
     it('should say that the class has the property', function () {
@@ -64,21 +64,12 @@ describe('ReflectionClass', function () {
         expect(refl.hasProperty('unknown')).toBe(false);
     });
 
-    it('should return the list of methods', function () {
-        var refl = new ReflectionClass(Mock),
-            methods = refl.getMethods();
-
-        expect(methods instanceof Array).toBe(true);
-        expect(methods.length).toEqual(1);
-        expect(methods[0] instanceof ReflectionMethod).toBe(true);
-    });
-
     it('should throw if trying to get unknown method', function () {
         var refl = new ReflectionClass(Mock);
 
         expect(function () {
             refl.getMethod('unknown');
-        }).toThrow(new ReferenceError());
+        }).toThrow('Unknown method');
     });
 
     it('should return a ReflectionMethod object', function () {
@@ -100,21 +91,12 @@ describe('ReflectionClass', function () {
         expect(refl.hasMethod('unknown')).toBe(false);
     });
 
-    it('should return the list of constants', function () {
-        var refl = new ReflectionClass(Mock),
-            constants = refl.getConstants();
-
-        expect(constants instanceof Array).toBe(true);
-        expect(constants.length).toEqual(1);
-        expect(constants[0] instanceof ReflectionConstant).toBe(true);
-    });
-
     it('should throw if trying to get unknown constant', function () {
         var refl = new ReflectionClass(Mock);
 
         expect(function () {
             refl.getConstant('unknown');
-        }).toThrow(new ReferenceError());
+        }).toThrow('Unknown constant');
     });
 
     it('should return a ReflectionConstant object', function () {

@@ -116,7 +116,7 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
 
             var refl = new ReflectionMethod(method, this.object[method]);
 
-            refl.setObject(this.object);
+            refl.setObject(this);
 
             return refl;
 

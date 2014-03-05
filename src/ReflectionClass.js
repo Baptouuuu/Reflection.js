@@ -13,6 +13,10 @@ var ReflectionClass = function (definition) {
 };
 ReflectionClass.prototype = Object.create(Object.prototype, {
 
+    PROPERTY_PATTERN: {
+        value: '^this\\.([\\w_]+)\\s?=.*$'
+    },
+
     /**
      * Return the list of properties set in the object
      *
@@ -20,7 +24,30 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
      */
 
     getProperties: {
-        value: function () {}
+        value: function () {
+
+            var properties = [],
+                lines = this.definition.toString().split('\n'),
+                re = new RegExp(this.PROPERTY_PATTERN, 'i'),
+                results,
+                refl;
+
+            for (var line in lines) {
+                line = lines[line].trim();
+                results = re.exec(line);
+
+                if (results && results.length >= 2) {
+                    //`null` as i can't determine the type of the property via regular expression
+                    refl = new ReflectionProperty(results[1], null);
+                    refl.setClass(this);
+
+                    properties.push(refl);
+                }
+            }
+
+            return properties;
+
+        }
     },
 
     /**
@@ -32,7 +59,19 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
      */
 
     getProperty: {
-        value: function (property) {}
+        value: function (property) {
+
+            if (!this.hasProperty(property)) {
+                throw new ReferenceError('Unknown property');
+            }
+
+            var refl = new ReflectionProperty(property, null);
+
+            refl.setClass(this);
+
+            return refl;
+
+        }
     },
 
     /**
@@ -44,17 +83,24 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
      */
 
     hasProperty: {
-        value: function (property) {}
-    },
+        value: function (property) {
 
-    /**
-     * Return the list of methods set in the class
-     *
-     * @return {Array}
-     */
+            var lines = this.definition.toString().split('\n'),
+                re = new RegExp(this.PROPERTY_PATTERN, 'i'),
+                results;
 
-    getMethods: {
-        value: function () {}
+            for (var line in lines) {
+                line = lines[line].trim();
+                results = re.exec(line);
+
+                if (results && results.length >= 2 && results[1] === property) {
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
     },
 
     /**
@@ -66,7 +112,19 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
      */
 
     getMethod: {
-        value: function (method) {}
+        value: function (method) {
+
+            if (!this.hasMethod(method)) {
+                throw new ReferenceError('Unknown method');
+            }
+
+            var refl = new ReflectionMethod(method, this.definition.prototype[method]);
+
+            refl.setClass(this);
+
+            return refl;
+
+        }
     },
 
     /**
@@ -78,17 +136,18 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
      */
 
     hasMethod: {
-        value: function (method) {}
-    },
+        value: function (method) {
 
-    /**
-     * Return the list of constants set in the class
-     *
-     * @return {Array}
-     */
+            if (
+                this.definition.prototype.hasOwnProperty(method) &&
+                typeof this.definition.prototype[method] === 'function'
+            ) {
+                return true;
+            }
 
-    getConstants: {
-        value: function () {}
+            return false;
+
+        }
     },
 
     /**
@@ -100,7 +159,19 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
      */
 
     getConstant: {
-        value: function (constant) {}
+        value: function (constant) {
+
+            if (!this.hasConstant(constant)) {
+                throw new ReferenceError('Unknown constant');
+            }
+
+            var refl = new ReflectionConstant(constant, this.definition.prototype[constant]);
+
+            refl.setClass(this);
+
+            return refl;
+
+        }
     },
 
     /**
@@ -112,17 +183,34 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
      */
 
     hasConstant: {
-        value: function (constant) {}
+        value: function (constant) {
+
+            if (
+                this.definition.prototype[constant] !== undefined &&
+                !this.hasMethod(constant)
+            ) {
+                return true;
+            }
+
+            return false;
+
+        }
     },
 
     /**
      * Create a new instance of the class
      *
+     * Unfortunately you can't pass arguments to this method
+     *
      * @return {Object}
      */
 
     create: {
-        value: function () {}
+        value: function () {
+
+            return new this.definition();
+
+        }
     }
 
 });
