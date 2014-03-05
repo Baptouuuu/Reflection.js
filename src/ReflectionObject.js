@@ -183,7 +183,13 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     freeze: {
-        value: function () {}
+        value: function () {
+
+            Object.freeze(this.object);
+
+            return this;
+
+        }
     },
 
     /**
@@ -193,7 +199,11 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     isFrozen: {
-        value: function () {}
+        value: function () {
+
+            return Object.isFrozen(this.object);
+
+        }
     },
 
     /**
