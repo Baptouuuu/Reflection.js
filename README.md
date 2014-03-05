@@ -1,5 +1,7 @@
 # Reflection.js
 
+[![Build Status](https://travis-ci.org/Baptouuuu/Reflection.js.png?branch=master)](https://travis-ci.org/Baptouuuu/Reflection.js)
+
 This library is here to help you manipulate and get informations about objects.
 
 ## Terminology
