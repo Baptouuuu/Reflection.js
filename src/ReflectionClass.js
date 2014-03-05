@@ -18,6 +18,18 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
     },
 
     /**
+     * Get class definition
+     *
+     * @return {Function}
+     */
+
+    getClass: {
+        value: function () {
+            return this.definition;
+        }
+    },
+
+    /**
      * Return the list of properties set in the object
      *
      * @return {Array}
