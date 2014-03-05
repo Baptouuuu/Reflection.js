@@ -30,7 +30,7 @@ describe('ReflectionObject', function () {
     it('should throw if not an object passed to the constructor', function () {
         expect(function () {
             new ReflectionObject(function () {});
-        }).toThrow(new TypeError());
+        }).toThrow('You must pass an object as argument');
     });
 
     it('should return the list of properties', function () {
@@ -39,7 +39,7 @@ describe('ReflectionObject', function () {
 
         expect(props instanceof Array).toBe(true);
         expect(props.length).toEqual(1);
-        expect(props).toEqual(['property']);
+        expect(props[0] instanceof ReflectionProperty).toBe(true);
     });
 
     it('should throw if trying to get unknown property', function () {
@@ -47,7 +47,7 @@ describe('ReflectionObject', function () {
 
         expect(function () {
             refl.getProperty('unknown');
-        }).toThrow(new ReferenceError());
+        }).toThrow('Unknown property');
     });
 
     it('should return a ReflectionProperty object', function () {
