@@ -87,12 +87,10 @@ describe('ReflectionMethod', function () {
     });
 
     it('should call the method', function () {
-        var refl = new ReflectionMethod(),
-            object = new Mock(),
-            reflObj = new ReflectionObject(object);
+        var object = new Mock(),
+            reflObj = new ReflectionObject(object),
+            refl = new ReflectionMethod('method', object.method);
 
-        refl.setPrototype(object.method);
-        refl.setName('method');
         refl.setObject(reflObj);
 
         expect(refl.call()).toEqual('called with no argument');
@@ -100,11 +98,9 @@ describe('ReflectionMethod', function () {
     });
 
     it('should throw if trying to call not in the context its taken from an object', function () {
-        var refl = new ReflectionMethod(),
+        var refl = new ReflectionMethod('method', Mock.prototype.method),
             reflClass = new ReflectionClass(Mock);
 
-        refl.setPrototype(Mock.prototype.method);
-        refl.setName('method');
         refl.setClass(reflClass);
 
         expect(function () {

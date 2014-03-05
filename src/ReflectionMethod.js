@@ -129,7 +129,15 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
      */
 
     call: {
-        value: function () {}
+        value: function () {
+
+            if (this.classOwner !== null && typeof this.objectOwner !== 'object') {
+                throw new SyntaxError('Can call the method only if reflected from an object');
+            }
+
+            return this.getPrototype().apply(this.objectOwner, arguments);
+
+        }
     }
 
 });
