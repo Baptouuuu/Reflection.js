@@ -11,27 +11,28 @@ describe('ReflectionProperty', function () {
             this.property = null;
         };
 
+    it('should throw if no arguments passed to the constructor', function () {
+        expect(function () {
+            new ReflectionProperty();
+        }).toThrow('You must specify property name and value');
+    });
+
     it('should set the property value', function () {
-        var refl = new ReflectionProperty(),
-            object = new Mock();
+        var refl = new ReflectionProperty('property', 42);
 
-        refl.setValue(object.property);
-
-        expect(refl.getValue()).toEqual(object.property);
+        expect(refl.getValue()).toEqual(42);
     });
 
     it('should set the property name', function () {
-        var refl = new ReflectionProperty();
-
-        refl.setName('property');
+        var refl = new ReflectionProperty('property', null);
 
         expect(refl.getName()).toEqual('property');
     });
 
     it('should set the object owning the property', function () {
-        var refl = new ReflectionProperty(),
-            object = new Mock(),
-            reflObj = new ReflectionObject(object);
+        var object = new Mock(),
+            reflObj = new ReflectionObject(object),
+            refl = new ReflectionProperty('property', object.property);
 
         refl.setObject(reflObj);
 
@@ -39,46 +40,46 @@ describe('ReflectionProperty', function () {
     });
 
     it('should throw trying to set invalid object', function () {
-        var refl = new ReflectionProperty();
+        var refl = new ReflectionProperty('property', null);
 
         expect(function () {
             refl.setObject(function () {});
-        }).toThrow(new TypeError());
+        }).toThrow('Invalid object');
     });
 
     it('should throw if trying to set an object not owning the property', function () {
-        var refl = new ReflectionProperty(),
+        var refl = new ReflectionProperty('property', null),
             reflObj = new ReflectionObject({});
 
         expect(function () {
             refl.setObject(reflObj);
-        }).toThrow(new ReferenceError());
+        }).toThrow('The object does not own this property');
     });
 
     it('should set the class owning the property', function () {
-        var refl = new ReflectionProperty(),
+        var refl = new ReflectionProperty('property', null),
             reflClass = new ReflectionClass(Mock);
 
         refl.setClass(reflClass);
 
-        expect(refl.getClass() instanceof Mock).toBe(true);
+        expect(refl.getClass() instanceof ReflectionClass).toBe(true);
     });
 
     it('should throw if trying to set invalid class', function () {
-        var refl = new ReflectionProperty();
+        var refl = new ReflectionProperty('property', null);
 
         expect(function () {
             refl.setClass({});
-        }).toThrow(new TypeError());
+        }).toThrow('Invalid class');
     });
 
     it('should throw if trying to set a class not owning the property', function () {
-        var refl = new ReflectionProperty(),
+        var refl = new ReflectionProperty('property', null),
             reflClass = new ReflectionClass(function () {});
 
         expect(function () {
             refl.setClass(reflClass);
-        }).toThrow(new ReferenceError());
+        }).toThrow('The class does not own this property');
     });
 
 });

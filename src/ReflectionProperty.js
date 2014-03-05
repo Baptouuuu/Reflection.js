@@ -1,24 +1,16 @@
-var ReflectionProperty = function () {
+var ReflectionProperty = function (name, value) {
 
-    this.value = null;
-    this.name = null;
+    if (arguments.length !== 2) {
+        throw new SyntaxError('You must specify property name and value');
+    }
+
+    this.value = value;
+    this.name = name;
     this.classOwner = null;
     this.objectOwner = null;
 
 };
 ReflectionProperty.prototype = Object.create(Object.prototype, {
-
-    /**
-     * Set the property value
-     *
-     * @param {mixed} value
-     *
-     * @return {ReflectionProperty}
-     */
-
-    setValue: {
-        value: function (value) {}
-    },
 
     /**
      * Return the property value
@@ -27,19 +19,11 @@ ReflectionProperty.prototype = Object.create(Object.prototype, {
      */
 
     getValue: {
-        value: function () {}
-    },
+        value: function () {
 
-    /**
-     * Set the property name
-     *
-     * @param {String} name
-     *
-     * @return {ReflectionProperty}
-     */
+            return this.value;
 
-    setName: {
-        value: function (name) {}
+        }
     },
 
     /**
@@ -49,51 +33,91 @@ ReflectionProperty.prototype = Object.create(Object.prototype, {
      */
 
     getName: {
-        value: function () {}
+        value: function () {
+
+            return this.name;
+
+        }
     },
 
     /**
      * Set the object this property is taken from
      *
-     * @param {Object} object
+     * @param {ReflectionObject} reflection
      *
      * @return {ReflectionProperty}
      */
 
     setObject: {
-        value: function (object) {}
+        value: function (reflection) {
+
+            if (!(reflection instanceof ReflectionObject)) {
+                throw new TypeError('Invalid object');
+            }
+
+            if (!reflection.hasProperty(this.getName())) {
+                throw new ReferenceError('The object does not own this property');
+            }
+
+            this.objectOwner = reflection;
+
+            return this;
+
+        }
     },
 
     /**
      * Return the object the property is taken from
      *
-     * @return {Object}
+     * @return {ReflectionObject}
      */
 
     getObject: {
-        value: function () {}
+        value: function () {
+
+            return this.objectOwner;
+
+        }
     },
 
     /**
      * Set the class this property is taken from
      *
-     * @param {Function} classOwner
+     * @param {ReflectionClass} reflection
      *
      * @return {ReflectionProperty}
      */
 
     setClass: {
-        value: function (classOwner) {}
+        value: function (reflection) {
+
+            if (!(reflection instanceof ReflectionClass)) {
+                throw new TypeError('Invalid class');
+            }
+
+            if (!reflection.hasProperty(this.getName())) {
+                throw new ReferenceError('The class does not own this property');
+            }
+
+            this.classOwner = reflection;
+
+            return this;
+
+        }
     },
 
     /**
      * Return the class this property is taken from
      *
-     * @return {Function}
+     * @return {ReflectionClass}
      */
 
     getClass: {
-        value: function () {}
+        value: function () {
+
+            return this.classOwner;
+
+        }
     }
 
 });
