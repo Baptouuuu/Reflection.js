@@ -174,13 +174,33 @@ ReflectionConstant.prototype = Object.create(Object.prototype, {
     getMeta: {
         value: function (key) {
 
-            if (!(this.classOwner instanceof ReflectionClass) || this.objectOwner !== null) {
+            if (this.getContext() !== 'class') {
                 throw new SyntaxError('Can get information only if reflected from a class');
             }
 
             var meta = Object.getOwnPropertyDescriptor(this.classOwner.getClass().prototype, this.getName());
 
             return meta ? meta[key] : false;
+
+        }
+    },
+
+    /**
+     * Return the context, meaning object or class
+     *
+     * @return {String} object|class|unknown
+     */
+
+    getContext: {
+        value: function () {
+
+            if (this.classOwner instanceof ReflectionClass && this.objectOwner === null) {
+                return 'class';
+            } else if (this.classOwner === null && this.objectOwner instanceof ReflectionObject) {
+                return 'object';
+            } else {
+                return 'unknown';
+            }
 
         }
     }

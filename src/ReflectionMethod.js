@@ -131,11 +131,31 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
     call: {
         value: function () {
 
-            if (this.classOwner !== null || !(this.objectOwner instanceof ReflectionObject)) {
+            if (this.getContext() !== 'object') {
                 throw new SyntaxError('Can call the method only if reflected from an object');
             }
 
             return this.getPrototype().apply(this.objectOwner, arguments);
+
+        }
+    },
+
+    /**
+     * Return the context, meaning object or class
+     *
+     * @return {String} object|class|unknown
+     */
+
+    getContext: {
+        value: function () {
+
+            if (this.classOwner instanceof ReflectionClass && this.objectOwner === null) {
+                return 'class';
+            } else if (this.classOwner === null && this.objectOwner instanceof ReflectionObject) {
+                return 'object';
+            } else {
+                return 'unknown';
+            }
 
         }
     }
