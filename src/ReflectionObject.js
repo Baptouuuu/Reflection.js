@@ -120,8 +120,6 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
     hasMethod: {
         value: function (method) {
 
-            var m;
-
             if (typeof this.object[method] === 'function' && !this.hasProperty(method)) {
                 return true;
             }
