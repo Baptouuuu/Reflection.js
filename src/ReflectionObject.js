@@ -160,7 +160,7 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
 
             var refl = new ReflectionConstant(constant, this.object[constant]);
 
-            refl.setObject(this.object);
+            refl.setObject(this);
 
             return refl;
         }
