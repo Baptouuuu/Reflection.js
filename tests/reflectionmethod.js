@@ -66,7 +66,7 @@ describe('ReflectionMethod', function () {
 
         refl.setClass(reflClass);
 
-        expect(refl.getClass() instanceof Mock).toBe(true);
+        expect(refl.getClass() instanceof ReflectionClass).toBe(true);
     });
 
     it('should throw if trying to set invalid class', function () {
@@ -105,7 +105,7 @@ describe('ReflectionMethod', function () {
 
         expect(function () {
             refl.call();
-        }).toThrow(new SyntaxError());
+        }).toThrow('Can call the method only if reflected from an object');
     });
 
 });
