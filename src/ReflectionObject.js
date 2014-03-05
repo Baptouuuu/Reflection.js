@@ -213,7 +213,13 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     seal: {
-        value: function () {}
+        value: function () {
+
+            Object.seal(this.object);
+
+            return this;
+
+        }
     },
 
     /**
@@ -223,7 +229,11 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     isSealed: {
-        value: function () {}
+        value: function () {
+
+            return Object.isSealed(this.object);
+
+        }
     }
 
 });
