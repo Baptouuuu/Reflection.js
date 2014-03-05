@@ -20,7 +20,25 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     getProperties: {
-        value: function () {}
+        value: function () {
+
+            var properties = [],
+                refl;
+
+            for (var prop in this.object) {
+                if (this.object.hasOwnProperty(prop)) {
+                    refl = new ReflectionProperty(
+                        prop,
+                        this.object[prop]
+                    );
+                    refl.setObject(this.object);
+                    properties.push(refl);
+                }
+            }
+
+            return properties;
+
+        }
     },
 
     /**
@@ -32,7 +50,19 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     getProperty: {
-        value: function (property) {}
+        value: function (property) {
+
+            if (!this.hasProperty(property)) {
+                throw new ReferenceError('Unknown property');
+            }
+
+            var refl = new ReflectionProperty(property, this.object[property]);
+
+            refl.setObject(this.object);
+
+            return refl;
+
+        }
     },
 
     /**
@@ -44,7 +74,15 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     hasProperty: {
-        value: function (property) {}
+        value: function (property) {
+
+            if (this.object.hasOwnProperty(property)) {
+                return true;
+            }
+
+            return false;
+
+        }
     },
 
     /**
