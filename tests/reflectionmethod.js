@@ -61,7 +61,7 @@ describe('ReflectionMethod', function () {
     });
 
     it('should set the class owning the method', function () {
-        var refl = new ReflectionMethod(),
+        var refl = new ReflectionMethod('method', Mock.prototype.method),
             reflClass = new ReflectionClass(Mock);
 
         refl.setClass(reflClass);
@@ -70,20 +70,20 @@ describe('ReflectionMethod', function () {
     });
 
     it('should throw if trying to set invalid class', function () {
-        var refl = new ReflectionMethod();
+        var refl = new ReflectionMethod('method', Mock.prototype.method);
 
         expect(function () {
             refl.setClass({});
-        }).toThrow(new TypeError());
+        }).toThrow('Invalid class');
     });
 
     it('should throw if trying to set a class not owning the method', function () {
-        var refl = new ReflectionMethod(),
+        var refl = new ReflectionMethod('method', Mock.prototype.method),
             reflClass = new ReflectionClass(function () {});
 
         expect(function () {
             refl.setClass(reflClass);
-        }).toThrow(new ReferenceError());
+        }).toThrow('The class does not own this method');
     });
 
     it('should call the method', function () {

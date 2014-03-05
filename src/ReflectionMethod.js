@@ -83,13 +83,27 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
     /**
      * Set the class this method is taken from
      *
-     * @param {Function} classOwner
+     * @param {ReflectionClass} reflection
      *
      * @return {ReflectionMethod}
      */
 
     setClass: {
-        value: function (classOwner) {}
+        value: function (reflection) {
+
+            if (!(reflection instanceof ReflectionClass)) {
+                throw new TypeError('Invalid class');
+            }
+
+            if (!reflection.hasMethod(this.getName())) {
+                throw new ReferenceError('The class does not own this method');
+            }
+
+            this.classOwner = reflection;
+
+            return this;
+
+        }
     },
 
     /**
@@ -99,7 +113,11 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
      */
 
     getClass: {
-        value: function () {}
+        value: function () {
+
+            return this.classOwner;
+
+        }
     },
 
     /**
