@@ -108,4 +108,21 @@ describe('ReflectionMethod', function () {
         }).toThrow('Can call the method only if reflected from an object');
     });
 
+    it('should return the appropriate context', function () {
+        var refl = new ReflectionMethod('method', null),
+            obj = new ReflectionObject(new Mock()),
+            klass = new ReflectionClass(Mock);
+
+        expect(refl.getContext()).toEqual('unknown');
+
+        refl.setObject(obj);
+
+        expect(refl.getContext()).toEqual('object');
+
+        refl.objectOwner = null;
+        refl.setClass(klass);
+
+        expect(refl.getContext()).toEqual('class');
+    });
+
 });

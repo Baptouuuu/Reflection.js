@@ -196,4 +196,21 @@ describe('ReflectionConstant', function () {
         }).toThrow('Can get information only if reflected from a class');
     });
 
+    it('should return the appropriate context', function () {
+        var refl = new ReflectionConstant('CONSTANT', null),
+            obj = new ReflectionObject(new Mock()),
+            klass = new ReflectionClass(Mock);
+
+        expect(refl.getContext()).toEqual('unknown');
+
+        refl.setObject(obj);
+
+        expect(refl.getContext()).toEqual('object');
+
+        refl.objectOwner = null;
+        refl.setClass(klass);
+
+        expect(refl.getContext()).toEqual('class');
+    });
+
 });
