@@ -52,25 +52,21 @@ describe('ReflectionConstant', function () {
     });
 
     it('should set the constant value', function () {
-        var refl = new ReflectionConstant();
-
-        refl.setValue(Mock.prototype.CONSTANT);
+        var refl = new ReflectionConstant('CONSTANT', Mock.prototype.CONSTANT);
 
         expect(refl.getValue()).toEqual(42);
     });
 
     it('should set the constant name', function () {
-        var refl = new ReflectionConstant();
-
-        refl.setName('CONSTANT');
+        var refl = new ReflectionConstant('CONSTANT', Mock.prototype.CONSTANT);
 
         expect(refl.getName()).toEqual('CONSTANT');
     });
 
     it('should set the object owning the constant', function () {
-        var refl = new ReflectionConstant(),
-            object = new Mock(),
-            reflObj = new ReflectionObject(object);
+        var object = new Mock(),
+            reflObj = new ReflectionObject(object),
+            refl = new ReflectionConstant('CONSTANT', object.CONSTANT);
 
         refl.setObject(reflObj);
 
@@ -78,136 +74,126 @@ describe('ReflectionConstant', function () {
     });
 
     it('should throw trying to set invalid object', function () {
-        var refl = new ReflectionConstant();
+        var object = new Mock(),
+            refl = new ReflectionConstant('CONSTANT', object.CONSTANT);
 
         expect(function () {
             refl.setObject(function () {});
-        }).toThrow(new TypeError());
+        }).toThrow('Invalid object');
     });
 
     it('should throw if trying to set an object not owning the constant', function () {
-        var refl = new ReflectionConstant(),
+        var refl = new ReflectionConstant('CONSTANT', null),
             reflObj = new ReflectionObject({});
 
         expect(function () {
             refl.setObject(reflObj);
-        }).toThrow(new ReferenceError());
+        }).toThrow('The object does not own this constant');
     });
 
     it('should set the class owning the constant', function () {
-        var refl = new ReflectionConstant(),
+        var refl = new ReflectionConstant('CONSTANT', Mock.prototype.CONSTANT),
             reflClass = new ReflectionClass(Mock);
 
         refl.setClass(reflClass);
 
-        expect(refl.getClass() instanceof Mock).toBe(true);
+        expect(refl.getClass() instanceof ReflectionClass).toBe(true);
     });
 
     it('should throw if trying to set invalid class', function () {
-        var refl = new ReflectionConstant();
+        var refl = new ReflectionConstant('CONSTANT', Mock.prototype.CONSTANT);
 
         expect(function () {
             refl.setClass({});
-        }).toThrow(new TypeError());
+        }).toThrow('Invalid class');
     });
 
     it('should throw if trying to set a class not owning the constant', function () {
-        var refl = new ReflectionConstant(),
+        var refl = new ReflectionConstant('CONSTANT', Mock.prototype.CONSTANT),
             reflClass = new ReflectionClass(function () {});
 
         expect(function () {
             refl.setClass(reflClass);
-        }).toThrow(new ReferenceError());
+        }).toThrow('The class does not own this constant');
     });
 
     it('should say that the constant is writable', function () {
-        var refl = new ReflectionConstant(),
-            reflObj = new ReflectionObject(new Mock());
+        var refl = new ReflectionConstant('WRITABLE', Mock.prototype.WRITABLE),
+            reflClass = new ReflectionClass(Mock);
 
-        refl.setName('WRITABLE');
-        refl.setObject(reflObj);
+        refl.setClass(reflClass);
 
         expect(refl.isWritable()).toBe(true);
     });
 
     it('should say that the constant is not writable', function () {
-        var refl = new ReflectionConstant(),
-            reflObj = new ReflectionObject(new Mock());
+        var refl = new ReflectionConstant('NOT_WRITABLE', Mock.prototype.NOT_WRITABLE),
+            reflClass = new ReflectionClass(Mock);
 
-        refl.setName('NOT_WRITABLE');
-        refl.setObject(reflObj);
+        refl.setClass(reflClass);
 
         expect(refl.isWritable()).toBe(false);
     });
 
-    it('should throw if trying to know if writable not in the context of an object', function () {
-        var refl = new ReflectionConstant();
-
-        refl.setName('WRITABLE');
+    it('should throw if trying to know if writable not in the context of a class', function () {
+        var refl = new ReflectionConstant('WRITABLE', Mock.prototype.WRITABLE);
 
         expect(function () {
             refl.isWritable();
-        }).toThrow(new SyntaxError());
+        }).toThrow('Can get information only if reflected from a class');
     });
 
     it('should say that the constant is configurable', function () {
-        var refl = new ReflectionConstant(),
-            reflObj = new ReflectionObject(new Mock());
+        var refl = new ReflectionConstant('CONFIGURABLE', Mock.prototype.CONFIGURABLE),
+            reflClass = new ReflectionClass(Mock);
 
-        refl.setName('CONFIGURABLE');
-        refl.setObject(reflObj);
+        refl.setClass(reflClass);
 
         expect(refl.isConfigurable()).toBe(true);
     });
 
     it('should say that the constant is not configurable', function () {
-        var refl = new ReflectionConstant(),
-            reflObj = new ReflectionObject(new Mock());
+        var refl = new ReflectionConstant('NOT_CONFIGURABLE', Mock.prototype.NOT_CONFIGURABLE),
+            reflClass = new ReflectionClass(Mock);
 
-        refl.setName('NOT_CONFIGURABLE');
-        refl.setObject(reflObj);
+        refl.setClass(reflClass);
 
         expect(refl.isConfigurable()).toBe(false);
     });
 
-    it('should throw if trying to know if configurable not in the context of an object', function () {
-        var refl = new ReflectionConstant();
-
-        refl.setName('CONFIGURABLE');
+    it('should throw if trying to know if configurable not in the context of a class', function () {
+        var refl = new ReflectionConstant('CONFIGURABLE', Mock.prototype.CONFIGURABLE);
 
         expect(function () {
             refl.isConfigurable();
-        }).toThrow(new SyntaxError());
+        }).toThrow('Can get information only if reflected from a class');
     });
 
     it('should say that the constant is enumerable', function () {
-        var refl = new ReflectionConstant(),
-            reflObj = new ReflectionObject(new Mock());
+        var refl = new ReflectionConstant('ENUMERABLE', Mock.prototype.ENUMERABLE),
+            reflClass = new ReflectionClass(Mock);
 
-        refl.setName('ENUMERABLE');
-        refl.setObject(reflObj);
+        refl.setClass(reflClass);
 
         expect(refl.isEnumerable()).toBe(true);
     });
 
     it('should say that the constant is not enumerable', function () {
-        var refl = new ReflectionConstant(),
-            reflObj = new ReflectionObject(new Mock());
+        var refl = new ReflectionConstant('NOT_ENUMERABLE', Mock.prototype.NOT_ENUMERABLE),
+            reflClass = new ReflectionClass(Mock);
 
-        refl.setName('NOT_ENUMERABLE');
-        refl.setObject(reflObj);
+        refl.setClass(reflClass);
 
         expect(refl.isEnumerable()).toBe(false);
     });
 
-    it('should throw if trying to know if enumerable not in the context of an object', function () {
-        var refl = new ReflectionConstant();
+    it('should throw if trying to know if enumerable not in the context of a class', function () {
+        var refl = new ReflectionConstant('ENUMERABLE', Mock.prototype.ENUMERABLE);
 
-        refl.setName('ENUMERABLE');
 
         expect(function () {
             refl.isEnumerable();
-        }).toThrow(new SyntaxError());
+        }).toThrow('Can get information only if reflected from a class');
     });
 
 });

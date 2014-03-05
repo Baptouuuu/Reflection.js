@@ -1,24 +1,16 @@
-var ReflectionConstant = function () {
+var ReflectionConstant = function (name, value) {
 
-    this.value = null;
-    this.name = null;
+    if (arguments.length !== 2) {
+        throw new SyntaxError('You must specify constant name and value');
+    }
+
+    this.value = value;
+    this.name = name;
     this.objectOwner = null;
     this.classOwner = null;
 
 };
 ReflectionConstant.prototype = Object.create(Object.prototype, {
-
-    /**
-     * Set the property value
-     *
-     * @param {mixed} value
-     *
-     * @return {ReflectionConstant}
-     */
-
-    setValue: {
-        value: function (value) {}
-    },
 
     /**
      * Return the property value
@@ -27,19 +19,11 @@ ReflectionConstant.prototype = Object.create(Object.prototype, {
      */
 
     getValue: {
-        value: function () {}
-    },
+        value: function () {
 
-    /**
-     * Set the property name
-     *
-     * @param {String} name
-     *
-     * @return {ReflectionConstant}
-     */
+            return this.value;
 
-    setName: {
-        value: function (name) {}
+        }
     },
 
     /**
@@ -49,51 +33,91 @@ ReflectionConstant.prototype = Object.create(Object.prototype, {
      */
 
     getName: {
-        value: function () {}
+        value: function () {
+
+            return this.name;
+
+        }
     },
 
     /**
      * Set the object this property is taken from
      *
-     * @param {Object} object
+     * @param {ReflectionObject} reflection
      *
      * @return {ReflectionConstant}
      */
 
     setObject: {
-        value: function (object) {}
+        value: function (reflection) {
+
+            if (!(reflection instanceof ReflectionObject)) {
+                throw new TypeError('Invalid object');
+            }
+
+            if (!reflection.hasConstant(this.getName())) {
+                throw new ReferenceError('The object does not own this constant');
+            }
+
+            this.objectOwner = reflection;
+
+            return this;
+
+        }
     },
 
     /**
      * Return the object the property is taken from
      *
-     * @return {Object}
+     * @return {ReflectionObject}
      */
 
     getObject: {
-        value: function () {}
+        value: function () {
+
+            return this.objectOwner;
+
+        }
     },
 
     /**
      * Set the class this property is taken from
      *
-     * @param {Function} classOwner
+     * @param {ReflectionClass} reflection
      *
      * @return {ReflectionConstant}
      */
 
     setClass: {
-        value: function (classOwner) {}
+        value: function (reflection) {
+
+            if (!(reflection instanceof ReflectionClass)) {
+                throw new TypeError('Invalid class');
+            }
+
+            if (!reflection.hasConstant(this.getName())) {
+                throw new ReferenceError('The class does not own this constant');
+            }
+
+            this.classOwner = reflection;
+
+            return this;
+
+        }
     },
 
     /**
      * Return the class this property is taken from
      *
-     * @return {Function}
+     * @return {ReflectionClass}
      */
 
     getClass: {
-        value: function () {}
+        value: function () {
+
+            return this.classOwner;
+
+        }
     },
 
     /**
@@ -103,7 +127,11 @@ ReflectionConstant.prototype = Object.create(Object.prototype, {
      */
 
     isWritable: {
-        value: function () {}
+        value: function () {
+
+            return this.getMeta('writable');
+
+        }
     },
 
     /**
@@ -113,7 +141,11 @@ ReflectionConstant.prototype = Object.create(Object.prototype, {
      */
 
     isConfigurable: {
-        value: function () {}
+        value: function () {
+
+            return this.getMeta('configurable');
+
+        }
     },
 
     /**
@@ -123,7 +155,34 @@ ReflectionConstant.prototype = Object.create(Object.prototype, {
      */
 
     isEnumerable: {
-        value: function () {}
+        value: function () {
+
+            return this.getMeta('enumerable');
+
+        }
+    },
+
+    /**
+     * Get meta information on the constant
+     *
+     * @private
+     * @param {String} key
+     *
+     * @return {mixed}
+     */
+
+    getMeta: {
+        value: function (key) {
+
+            if (!(this.classOwner instanceof ReflectionClass) || this.objectOwner !== null) {
+                throw new SyntaxError('Can get information only if reflected from a class');
+            }
+
+            var meta = Object.getOwnPropertyDescriptor(this.classOwner.getClass().prototype, this.getName());
+
+            return meta ? meta[key] : false;
+
+        }
     }
 
 });
