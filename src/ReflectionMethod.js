@@ -1,6 +1,6 @@
 var ReflectionMethod = function (name, methodPrototype) {
 
-    if (!name || !methodPrototype) {
+    if (arguments.length !== 2) {
         throw new SyntaxError('You must specify method name and prototype');
     }
 
