@@ -138,7 +138,18 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     getConstant: {
-        value: function (constant) {}
+        value: function (constant) {
+
+            if (!this.hasConstant(constant)) {
+                throw new ReferenceError('Unknown constant');
+            }
+
+            var refl = new ReflectionConstant(constant, this.object[constant]);
+
+            refl.setObject(this.object);
+
+            return refl;
+        }
     },
 
     /**
@@ -150,7 +161,19 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
      */
 
     hasConstant: {
-        value: function (constant) {}
+        value: function (constant) {
+
+            if (
+                this.object[constant] &&
+                !this.hasProperty(constant) &&
+                !this.hasMethod(constant)
+            ) {
+                return true;
+            }
+
+            return false;
+
+        }
     },
 
     /**
