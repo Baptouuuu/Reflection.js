@@ -2,7 +2,7 @@
   "name": "Reflection.js",
   "homepage": "https://github.com/Baptouuuu/Reflection.js",
   "version": "1.0.0",
-  "main": "",
+  "main": "reflection.min.js",
   "ignore": [
     ".jshintrc",
     "**/*.txt"
