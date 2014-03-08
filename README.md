@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Baptouuuu/Reflection.js.png?branch=master)](https://travis-ci.org/Baptouuuu/Reflection.js)
 
-This library is here to help you manipulate and get informations about objects.
+This library is here to help you manipulate and get informations about objects via a more coherent syntax than the one offered by vanilla javascript.
 
 ## Terminology
 
