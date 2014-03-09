@@ -4,6 +4,12 @@
 
 This library is here to help you manipulate and get informations about objects via a more coherent syntax than the one offered by vanilla javascript.
 
+## Installation
+
+```shell
+bower install Reflection.js
+```
+
 ## Terminology
 
 Before explaining how to use the library, a bit of terminology so you understand the logic.
