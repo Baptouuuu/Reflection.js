@@ -173,4 +173,10 @@ describe('ReflectionObject', function () {
         expect(refl.isSealed()).toBe(false);
     });
 
+    it('should return the prototype', function () {
+        var refl = new ReflectionObject(object);
+
+        expect(refl.getPrototype()).toEqual(Mock.prototype);
+    });
+
 });

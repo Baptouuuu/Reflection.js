@@ -124,4 +124,10 @@ describe('ReflectionClass', function () {
         expect(refl.create() instanceof Mock).toBe(true);
     });
 
+    it('should return the prototype', function () {
+        var refl = new ReflectionClass(Mock);
+
+        expect(refl.getPrototype()).toEqual(Mock.prototype);
+    });
+
 });

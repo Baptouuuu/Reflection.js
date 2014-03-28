@@ -248,6 +248,20 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
             return Object.isSealed(this.object);
 
         }
+    },
+
+    /**
+     * Return the prototype of the given object
+     *
+     * @return {Object}
+     */
+
+    getPrototype: {
+        value: function () {
+
+            return Object.getPrototypeOf(this.object);
+
+        }
     }
 
 });

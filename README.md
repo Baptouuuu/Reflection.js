@@ -143,6 +143,13 @@ reflected.seal();
 reflected.isSealed(); //will return true
 ```
 
+### Prototype
+
+To retrieve the prototype of the object:
+```js
+reflected.getPrototype(); //=== Planet.prototype
+```
+
 ## Class
 
 To get a reflected object:
@@ -209,6 +216,13 @@ You can instanciate a new object directly from the reflected object by doing:
 reflected.create(); //will return an instance of Planet
 ```
 **Important**: Javascript don't allow to dynamically pass arguments to a constructor (at least I didn't find how), so you can't pass arguments via `create`.
+
+### Prototype
+
+To retrieve the prototype of the class:
+```js
+reflected.getPrototype(); //=== Planet.prototype
+```
 
 ## `ReflectionProperty`
 

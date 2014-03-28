@@ -223,6 +223,20 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
             return new this.definition();
 
         }
+    },
+
+    /**
+     * Return the prototype of the given class
+     *
+     * @return {Object}
+     */
+
+    getPrototype: {
+        value: function () {
+
+            return this.definition.prototype;
+
+        }
     }
 
 });
