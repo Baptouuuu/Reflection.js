@@ -9,12 +9,13 @@ describe('ReflectionMethod', function () {
 
     var Mock = function () {
             this.property = null;
+            this.extraToReturn = ' baz';
         };
 
     Mock.prototype = Object.create(Object.prototype, {
         method: {
             value: function (arg) {
-                return 'called ' + (arg || 'with no argument');
+                return 'called ' + (arg || 'with no argument') + this.extraToReturn;
             }
         }
     });
@@ -93,8 +94,8 @@ describe('ReflectionMethod', function () {
 
         refl.setObject(reflObj);
 
-        expect(refl.call()).toEqual('called with no argument');
-        expect(refl.call('foo')).toEqual('called foo');
+        expect(refl.call()).toEqual('called with no argument baz');
+        expect(refl.call('foo')).toEqual('called foo baz');
     });
 
     it('should throw if trying to call not in the context its taken from an object', function () {

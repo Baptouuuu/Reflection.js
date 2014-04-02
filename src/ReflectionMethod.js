@@ -135,7 +135,7 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
                 throw new SyntaxError('Can call the method only if reflected from an object');
             }
 
-            return this.getPrototype().apply(this.objectOwner, arguments);
+            return this.getPrototype().apply(this.objectOwner.getObject(), arguments);
 
         }
     },
