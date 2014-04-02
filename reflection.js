@@ -1,4 +1,4 @@
-/*! Reflection.js#1.0.0 - 2014-03-08 */
+/*! Reflection.js#1.0.0 - 2014-04-02 */
 var ReflectionClass = function(definition) {
     if (this === window) return new ReflectionClass(definition);
     if ("function" != typeof definition) throw new TypeError("You must pass a function as argument");
@@ -65,6 +65,11 @@ ReflectionClass.prototype = Object.create(Object.prototype, {
         value: function() {
             return new this.definition();
         }
+    },
+    getPrototype: {
+        value: function() {
+            return this.definition.prototype;
+        }
     }
 });
 
@@ -112,7 +117,7 @@ ReflectionMethod.prototype = Object.create(Object.prototype, {
     call: {
         value: function() {
             if ("object" !== this.getContext()) throw new SyntaxError("Can call the method only if reflected from an object");
-            return this.getPrototype().apply(this.objectOwner, arguments);
+            return this.getPrototype().apply(this.objectOwner.getObject(), arguments);
         }
     },
     getContext: {
@@ -196,6 +201,11 @@ ReflectionObject.prototype = Object.create(Object.prototype, {
     isSealed: {
         value: function() {
             return Object.isSealed(this.object);
+        }
+    },
+    getPrototype: {
+        value: function() {
+            return Object.getPrototypeOf(this.object);
         }
     }
 });
