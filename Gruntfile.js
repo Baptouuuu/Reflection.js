@@ -35,7 +35,7 @@ module.exports = function (grunt) {
         },
         shell: {
             test: {
-                command: 'venus run -t tests/ -n --singleton',
+                command: 'venus run -t tests/ -c -n',
                 options: {
                     stdout: true
                 }
