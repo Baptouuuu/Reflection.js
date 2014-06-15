@@ -82,4 +82,29 @@ describe('ReflectionProperty', function () {
         }).toThrow('The class does not own this property');
     });
 
+    it('should set the value in the object property', function () {
+        var obj = new Mock(),
+            reflObj = new ReflectionObject(obj),
+            refl = new ReflectionProperty('property', null);
+
+        refl.setObject(reflObj);
+        refl.setValue('foo');
+
+        expect(obj.property).toEqual('foo');
+    });
+
+    it('should throw if trying to set value in wrong context', function () {
+        var refl = new ReflectionProperty('property', null);
+
+        expect(function () {
+            refl.setValue('foo');
+        }).toThrow('Can call the method only if reflected from an object');
+
+        refl.setClass(new ReflectionClass(Mock));
+
+        expect(function () {
+            refl.setValue('foo');
+        }).toThrow('Can call the method only if reflected from an object');
+    });
+
 });

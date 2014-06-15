@@ -27,6 +27,27 @@ ReflectionProperty.prototype = Object.create(Object.prototype, {
     },
 
     /**
+     * Set the value in the object
+     * Not available in the class context
+     *
+     * @param {mixed} value
+     *
+     * @return {ReflectionProperty}
+     */
+
+    setValue: {
+        value: function (value) {
+            if (this.getContext() !== 'object') {
+                throw new SyntaxError('Can call the method only if reflected from an object');
+            }
+
+            this.objectOwner.getObject()[this.getName()] = value;
+
+            return this;
+        }
+    },
+
+    /**
      * Return the property name
      *
      * @return {String}
@@ -116,6 +137,26 @@ ReflectionProperty.prototype = Object.create(Object.prototype, {
         value: function () {
 
             return this.classOwner;
+
+        }
+    },
+
+    /**
+     * Return the context, meaning object or class
+     *
+     * @return {String} object|class|unknown
+     */
+
+    getContext: {
+        value: function () {
+
+            if (this.classOwner instanceof ReflectionClass && this.objectOwner === null) {
+                return 'class';
+            } else if (this.classOwner === null && this.objectOwner instanceof ReflectionObject) {
+                return 'object';
+            } else {
+                return 'unknown';
+            }
 
         }
     }
