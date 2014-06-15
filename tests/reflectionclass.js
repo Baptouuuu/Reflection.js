@@ -1,6 +1,6 @@
 /**
  * @venus-library jasmine
- * @venus-include ../src/ReflectionClass.js
+ * @venus-code ../src/ReflectionClass.js
  * @venus-include ../src/ReflectionMethod.js
  * @venus-include ../src/ReflectionConstant.js
  * @venus-include ../src/ReflectionProperty.js
